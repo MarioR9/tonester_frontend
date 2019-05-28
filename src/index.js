@@ -11,4 +11,20 @@ function init() {
       username: "Mr. Giggles"
     })
   })
+
+  verify()
+
+}
+
+
+
+function verify() {
+  let form = document.getElementById("login").addEventListener("submit", function() {grabUser()} )
+}
+
+function grabUser(e) {
+  e.preventDefault()
+  console.log("brrraaap")
+  // let name = document.getElementById("username_field").innerText
+  // console.log(name)
 }
