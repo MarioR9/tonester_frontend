@@ -8,7 +8,33 @@ class User {
     this.username = username
   }
 
-  createAccount() {
+  static verify() {
+  let form = document.getElementById("login")
+  form.addEventListener("submit", this.grabUser)
+  // debugger
+}
+  static grabUser = (e)=> {
+  e.preventDefault()
+  let name = e.currentTarget.firstElementChild.value
+  fetch('http://localhost:3000/login', {
+    method: "POST",
+    headers: {"Content-type": "application/json"},
+    body: JSON.stringify({
+      username: name
+    })
+  })
+  .then(res => res.json())             
+  .then(data => {console.log(data)})
+  // localStorage.setItem(data,data.user_id)
+    // find user, if exists, pass UserID into URL
+
+// run name against things already in DB
+// if match, go to page
+// if no match, send alert
+// decrement from total of 3, after all attempts exhausted, send to creation page
+}
+
+ static createAccount() {
     let button = document.getElementById("create-account")
     button.addEventListener("click", () => {
 
@@ -23,10 +49,10 @@ class User {
     </form>`
 
     let btn = document.querySelector(".create")
-      btn.addEventListener('submit', function(e){
+      btn.addEventListener('submit', (e)=>{
         e.preventDefault()
         console.log("clicked")
-        debugger
+
         let username = event.target.children[0].value
         let bio = event.target.children[1].value 
         let photo = event.target.children[2].value
