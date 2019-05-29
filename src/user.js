@@ -100,31 +100,13 @@ class User {
           let playlistDiv = document.createElement("div")
           playlistDiv.classList.add("playlist")
           playlistDiv.innerText = playlist.title
+          playlistDiv.id = playlist.id
           playlistWindowDiv.appendChild(playlistDiv)
 
           let songs = playlist.songs
-          songs.forEach( song => {
-            let sectionDiv = document.createElement("div")
-            sectionDiv.classList.add("song")
-            let songData = document.createElement("ul")
-            let titleLi = document.createElement("li")
-            titleLi.innerText = `Title: ${song.title}`
-            let albumLi = document.createElement("li")
-            albumLi.innerText = `Album: ${song.album}`
+          User.renderSongSec(songs,playlistDiv)
 
-            let artistLi = document.createElement("li")
-            artistLi.innerText = `Artist: ${song.artist}`
-
-            let genreLi = document.createElement("li")
-            genreLi.innerText = `Genre: ${song.genre}`
-
-            songData.append(artistLi, titleLi, albumLi, genreLi)
-            sectionDiv.appendChild(songData)
-            playlistDiv.appendChild(sectionDiv)
-          })
-
-        }
-      )
+        })
 
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
@@ -135,5 +117,46 @@ class User {
   }
 
 
+  static renderSongSec(songs,playlistDiv){
+    songs.forEach( song => {
+      let sectionDiv = document.createElement("div")
+      sectionDiv.classList.add("song")
+      let songData = document.createElement("ul")
+      let titleLi = document.createElement("li")
+      titleLi.innerText = `Title: ${song.title}`
+      let albumLi = document.createElement("li")
+      albumLi.innerText = `Album: ${song.album}`
+
+      let artistLi = document.createElement("li")
+      artistLi.innerText = `Artist: ${song.artist}`
+
+      let genreLi = document.createElement("li")
+      genreLi.innerText = `Genre: ${song.genre}`
+      let hiddenForm = document.createElement('form')
+      let hiddenInput = document.createElement('input') 
+      hiddenInput.setAttribute("type", "hidden")
+      songData.addEventListener('mouseenter',()=>{
+
+      hiddenInput.setAttribute("type", "text")
+      hiddenInput.classList.add("songInput")
+      hiddenForm.append(hiddenInput)
+      })
+
+      hiddenForm.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        let title = event.target.children[0].value
+        Playlist.fetchSongs(title)
+        hiddenInput.setAttribute("type","hidden")
+        hiddenInput.value = ""
+      })
+
+      songData.append(artistLi, titleLi, albumLi, genreLi,hiddenForm)
+      sectionDiv.appendChild(songData)
+      playlistDiv.appendChild(sectionDiv)
+    })
+  }
+
+
+  
 
 }
