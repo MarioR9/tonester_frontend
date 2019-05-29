@@ -13,7 +13,7 @@ class User {
   form.addEventListener("submit", this.grabUser)
   // debugger
 }
-  static grabUser = (e)=> {
+  static grabUser(e) {
   e.preventDefault()
   let name = e.currentTarget.firstElementChild.value
   fetch('http://localhost:3000/login', {
@@ -23,10 +23,10 @@ class User {
       username: name
     })
   })
-  .then(res => res.json())             
-  .then(data => {console.log(data)})
-  // localStorage.setItem(data,data.user_id)
-    // find user, if exists, pass UserID into URL
+  .then(res => res.json())
+  .then(data => {
+    User.renderProfile(data)})
+  // find user, if exists, pass UserID into URL
 
 // run name against things already in DB
 // if match, go to page
@@ -54,7 +54,7 @@ class User {
         console.log("clicked")
 
         let username = event.target.children[0].value
-        let bio = event.target.children[1].value 
+        let bio = event.target.children[1].value
         let photo = event.target.children[2].value
         fetch('http://localhost:3000/users', {
          method: "POST",
@@ -69,8 +69,32 @@ class User {
 
     })
 
+  }
 
+  static renderProfile(data) {
+    let page = document.getElementById("login-existing")
+    page.innerText = ""
+    let profileDiv = document.createElement("div")
+    profileDiv.classList.add("profile")
+
+    let searchDiv = document.createElement("div")
+    searchDiv.classList.add("search")
+
+    let playlistWindowDiv = document.createElement("div")
+    playlistWindowDiv.classList.add("playlist")
+
+    let playlistDiv = document.createElement("div")
+    playlistDiv.classList.add("playlist")
+
+    let sectionDiv = document.createElement("div")
+    sectionDiv.classList.add("song")
+
+    page.append(profileDiv, searchDiv, playlistWindowDiv)
+    playlistWindowDiv.appendChild(playlistDiv)
+    playlistDiv.appendChild(sectionDiv)
 
   }
+
+
 
 }
