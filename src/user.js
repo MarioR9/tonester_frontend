@@ -104,10 +104,10 @@ class User {
           playlistWindowDiv.appendChild(playlistDiv)
 
           let songs = playlist.songs
-          User.renderSongSec(songs,playlistDiv)
-
+          songs.forEach( song => {
+          User.renderSongSec(song,playlistDiv)
         })
-
+      })
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
 
@@ -117,8 +117,7 @@ class User {
   }
 
 
-  static renderSongSec(songs,playlistDiv){
-    songs.forEach( song => {
+  static renderSongSec(song,playlistDiv){
       let sectionDiv = document.createElement("div")
       sectionDiv.classList.add("song")
       let songData = document.createElement("ul")
@@ -133,7 +132,7 @@ class User {
       let genreLi = document.createElement("li")
       genreLi.innerText = `Genre: ${song.genre}`
       let hiddenForm = document.createElement('form')
-      let hiddenInput = document.createElement('input') 
+      let hiddenInput = document.createElement('input')
       hiddenInput.setAttribute("type", "hidden")
       songData.addEventListener('mouseenter',()=>{
 
@@ -145,7 +144,9 @@ class User {
       hiddenForm.addEventListener('submit',(e)=>{
         e.preventDefault()
         let title = event.target.children[0].value
-        Playlist.fetchSongs(title)
+        let playlist_id = event.target.parentElement.parentElement.parentElement.id
+
+        Playlist.fetchSongs(title, playlist_id)
         hiddenInput.setAttribute("type","hidden")
         hiddenInput.value = ""
       })
@@ -153,10 +154,8 @@ class User {
       songData.append(artistLi, titleLi, albumLi, genreLi,hiddenForm)
       sectionDiv.appendChild(songData)
       playlistDiv.appendChild(sectionDiv)
-    })
-  }
+    }
 
 
-  
 
 }

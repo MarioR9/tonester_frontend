@@ -11,21 +11,20 @@
 // search for songs
 
 class Playlist{
-    
-    
-    static fetchSongs(title){
-        
-        fetch("http://localhost:3000/search",{
-            method: "post",
+
+
+    static fetchSongs(title, playlist_id){
+        let playlistDiv = document.getElementById(`${playlist_id}`)
+        fetch("http://localhost:3000/songs",{
+            method: "POST",
             headers: {"Content-type": "application/json"},
             body: JSON.stringify({
-            title: title
+            title: title,
+            playlist_id: playlist_id
         })
     })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => User.renderSongSec(data, playlistDiv))
         }
 
 }
-
-
