@@ -120,6 +120,10 @@ class User {
   static renderSongSec(song,playlistDiv){
       let sectionDiv = document.createElement("div")
       sectionDiv.classList.add("song")
+      let deleteBtn = document.createElement("button")
+      sectionDiv.appendChild(deleteBtn)
+      deleteBtn.addEventListener("click", () => {
+        console.log("baleeted")})
       let songData = document.createElement("ul")
       let titleLi = document.createElement("li")
       titleLi.innerText = `Title: ${song.title}`

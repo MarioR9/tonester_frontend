@@ -12,7 +12,6 @@
 
 class Playlist{
 
-
     static fetchSongs(title, playlist_id){
         let playlistDiv = document.getElementById(`${playlist_id}`)
         fetch("http://localhost:3000/songs",{
@@ -22,9 +21,15 @@ class Playlist{
             title: title,
             playlist_id: playlist_id
         })
-    })
+      })
         .then(response => response.json())
-        .then(data => User.renderSongSec(data, playlistDiv))
+        .then(data => User.renderSongSec(data.newSong, playlistDiv))
         }
 
+    static deleteBtn() {
+      fetch(`http://localhost:3000/playlistsongs/${playlistsongs_id}`, {
+        
+      })
+
+    }
 }
