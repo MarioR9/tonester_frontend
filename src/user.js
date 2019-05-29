@@ -9,18 +9,21 @@ class User {
   }
 
   static verify() {
-  let form = document.getElementById("login")
-  form.addEventListener("submit", this.grabUser)
-  // debugger
-}
+    let form = document.getElementById("login")
+    form.addEventListener("submit", this.grabUser)
+
+    let button = document.getElementById("create-account")
+    button.addEventListener("click", User.createAccount)
+  }
+
   static grabUser(e) {
-  e.preventDefault()
-  let name = e.currentTarget.firstElementChild.value
-  fetch('http://localhost:3000/login', {
-    method: "POST",
-    headers: {"Content-type": "application/json"},
-    body: JSON.stringify({
-      username: name
+    e.preventDefault()
+    let name = e.currentTarget.firstElementChild.value
+    fetch('http://localhost:3000/login', {
+      method: "POST",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        username: name
     })
   })
   .then(res => res.json())
@@ -35,8 +38,6 @@ class User {
 }
 
  static createAccount() {
-    let button = document.getElementById("create-account")
-    button.addEventListener("click", () => {
 
     let oldForm = document.getElementById("login-existing")
     oldForm.innerText = ""
@@ -66,33 +67,71 @@ class User {
           })
         })
       })
-
-    })
-
-  }
+    }
 
   static renderProfile(data) {
-    let page = document.getElementById("login-existing")
-    page.innerText = ""
-    let profileDiv = document.createElement("div")
-    profileDiv.classList.add("profile")
+    // let counter = 3
+    if (data.id) {
+      let page = document.getElementById("login-existing")
+      page.innerText = ""
+      let profileDiv = document.createElement("div")
+      profileDiv.classList.add("profile")
+      let image = document.createElement("img")
+      image.classList.add("avatar")
+      image.src = data.photo
 
-    let searchDiv = document.createElement("div")
-    searchDiv.classList.add("search")
+      let bio = document.createElement("p")
+      bio.classList.add("description")
+      bio.innerText = data.bio
 
-    let playlistWindowDiv = document.createElement("div")
-    playlistWindowDiv.classList.add("playlist")
+      let username = document.createElement("h2")
+      username.classList.add("title")
+      username.innerText = data.username
 
-    let playlistDiv = document.createElement("div")
-    playlistDiv.classList.add("playlist")
+      let searchDiv = document.createElement("div")
+      searchDiv.classList.add("search")
 
-    let sectionDiv = document.createElement("div")
-    sectionDiv.classList.add("song")
+      let playlistWindowDiv = document.createElement("div")
+      playlistWindowDiv.classList.add("playlist")
 
-    page.append(profileDiv, searchDiv, playlistWindowDiv)
-    playlistWindowDiv.appendChild(playlistDiv)
-    playlistDiv.appendChild(sectionDiv)
 
+      let list = data.playlists
+      list.forEach( playlist => {
+          let playlistDiv = document.createElement("div")
+          playlistDiv.classList.add("playlist")
+          playlistDiv.innerText = playlist.title
+          playlistWindowDiv.appendChild(playlistDiv)
+
+          let songs = playlist.songs
+          songs.forEach( song => {
+            let sectionDiv = document.createElement("div")
+            sectionDiv.classList.add("song")
+            let songData = document.createElement("ul")
+            let titleLi = document.createElement("li")
+            titleLi.innerText = `Title: ${song.title}`
+            let albumLi = document.createElement("li")
+            albumLi.innerText = `Album: ${song.album}`
+
+            let artistLi = document.createElement("li")
+            artistLi.innerText = `Artist: ${song.artist}`
+
+            let genreLi = document.createElement("li")
+            genreLi.innerText = `Genre: ${song.genre}`
+
+            songData.append(artistLi, titleLi, albumLi, genreLi)
+            sectionDiv.appendChild(songData)
+            playlistDiv.appendChild(sectionDiv)
+          })
+
+        }
+      )
+
+      profileDiv.append(image, username, bio)
+      page.append(profileDiv, searchDiv, playlistWindowDiv)
+
+    } else {
+      alert(data.message)
+    }
   }
 
 
