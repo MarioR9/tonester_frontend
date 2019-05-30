@@ -28,10 +28,13 @@ class User {
   })
   .then(res => res.json())
   .then(data => {
-    User.renderProfile(data)
+    localStorage.setItem("id", data.id)
     if(data.id){
-    Playlist.createPlaylistForm()
-  }
+      while(localStorage.length == 1){
+      User.renderProfile(data)
+      Playlist.createPlaylistForm()
+      }
+    }
   })
   // find user, if exists, pass UserID into URL
 
@@ -76,7 +79,7 @@ class User {
   static renderProfile(data) {
     
     if (data.id) {
-      
+      localStorage.setItem("id", data.id)
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
@@ -107,8 +110,8 @@ class User {
       })
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
-     
-
+      
+      
     } else {
       alert(data.message)
     }
@@ -116,6 +119,7 @@ class User {
   static renderPlaylist(playlist,playlistWindowDiv){
     let playlistDiv = document.createElement("div")
           playlistDiv.classList.add("playlistSong")
+          
           playlistDiv.innerText = playlist.title
           playlistDiv.id = playlist.id
           let editButton = document.createElement('button')
@@ -131,8 +135,9 @@ class User {
           editButton.addEventListener('click',(e)=>{
               e.preventDefault() 
           
-          let editedInput = e.target.parentElement.children[0].value 
+          let editedInput = e.target.parentElement.children[1].value 
           let playlistId  = playlistDiv.id
+          
           playlistDiv.remove()
           Playlist.updateTitle(editedInput,playlistId,playlistWindowDiv)
             })
