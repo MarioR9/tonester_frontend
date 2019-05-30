@@ -11,7 +11,7 @@ class User {
   static verify() {
     let form = document.getElementById("login")
     form.addEventListener("submit", this.grabUser)
-
+    
     let button = document.getElementById("create-account")
     button.addEventListener("click", User.createAccount)
   }
@@ -28,7 +28,9 @@ class User {
   })
   .then(res => res.json())
   .then(data => {
-    User.renderProfile(data)})
+    User.renderProfile(data)
+    Playlist.createPlaylistForm()
+  })
   // find user, if exists, pass UserID into URL
 
 // run name against things already in DB
@@ -74,6 +76,7 @@ class User {
     if (data.id) {
       let page = document.getElementById("login-existing")
       page.innerText = ""
+      page.dataset.uId = data.id
       let profileDiv = document.createElement("div")
       profileDiv.classList.add("profile")
       let image = document.createElement("img")
@@ -101,8 +104,34 @@ class User {
           playlistDiv.classList.add("playlist")
           playlistDiv.innerText = playlist.title
           playlistDiv.id = playlist.id
-          playlistWindowDiv.appendChild(playlistDiv)
 
+          let newSongForm = document.createElement('form')
+          let newSongInput = document.createElement('input')
+          let newSong = document.createElement('button')
+          newSong.id = "songBtn"
+          newSong.innerText = "🎵"
+          newSongInput.setAttribute("type","hidden")
+          newSong.addEventListener('click', ()=>{ 
+            document.getElementById('songBtn').style.display = "none"  
+            
+          newSongInput.setAttribute("type", "text")
+          newSongInput.placeholder = "Song Tittle"  
+          playlistDiv.append(newSongForm,newSong)
+          newSongForm.appendChild(newSongInput)
+          console.log("music!")
+           })
+          newSongForm.addEventListener('submit',(e)=>{
+              e.preventDefault()
+              let title = e.target[0].value
+              let playlist_id = e.target.parentElement.id
+              
+              Playlist.fetchSongs(title, playlist_id)
+
+          })
+          playlistDiv.appendChild(newSong)
+         
+
+          playlistWindowDiv.appendChild(playlistDiv)
           let songs = playlist.songs
           songs.forEach( song => {
           User.renderSongSec(song,playlistDiv)
@@ -110,6 +139,7 @@ class User {
       })
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
+     
 
     } else {
       alert(data.message)
