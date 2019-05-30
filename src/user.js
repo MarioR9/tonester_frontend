@@ -29,7 +29,9 @@ class User {
   .then(res => res.json())
   .then(data => {
     User.renderProfile(data)
+    if(data.id){
     Playlist.createPlaylistForm()
+  }
   })
   // find user, if exists, pass UserID into URL
 
@@ -72,8 +74,9 @@ class User {
     }
 
   static renderProfile(data) {
-    // let counter = 3
+    
     if (data.id) {
+      
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
@@ -100,42 +103,7 @@ class User {
 
       let list = data.playlists
       list.forEach( playlist => {
-          let playlistDiv = document.createElement("div")
-          playlistDiv.classList.add("playlist")
-          playlistDiv.innerText = playlist.title
-          playlistDiv.id = playlist.id
-
-          let newSongForm = document.createElement('form')
-          let newSongInput = document.createElement('input')
-          let newSong = document.createElement('button')
-          newSong.id = "songBtn"
-          newSong.innerText = "🎵"
-          newSongInput.setAttribute("type","hidden")
-          newSong.addEventListener('click', ()=>{ 
-            document.getElementById('songBtn').style.display = "none"  
-            
-          newSongInput.setAttribute("type", "text")
-          newSongInput.placeholder = "Song Tittle"  
-          playlistDiv.append(newSongForm,newSong)
-          newSongForm.appendChild(newSongInput)
-          console.log("music!")
-           })
-          newSongForm.addEventListener('submit',(e)=>{
-              e.preventDefault()
-              let title = e.target[0].value
-              let playlist_id = e.target.parentElement.id
-              
-              Playlist.fetchSongs(title, playlist_id)
-
-          })
-          playlistDiv.appendChild(newSong)
-         
-
-          playlistWindowDiv.appendChild(playlistDiv)
-          let songs = playlist.songs
-          songs.forEach( song => {
-          User.renderSongSec(song,playlistDiv)
-        })
+          User.renderPlaylist(playlist,playlistWindowDiv)
       })
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
@@ -145,14 +113,82 @@ class User {
       alert(data.message)
     }
   }
+  static renderPlaylist(playlist,playlistWindowDiv){
+    let playlistDiv = document.createElement("div")
+          playlistDiv.classList.add("playlistSong")
+          playlistDiv.innerText = playlist.title
+          playlistDiv.id = playlist.id
+          let editButton = document.createElement('button')
+          let editTitle = document.createElement("input")
+          User.deletePlaylist(playlistDiv)
+          editButton.innerText = "Edit"
+          editTitle.setAttribute('type','hidden')
+          //Edit button to text on click
+          playlistDiv.append(editTitle,editButton)
+          editButton.addEventListener('click',(e)=>{
+              e.preventDefault()
+          editTitle.setAttribute('type','text')
+          editButton.addEventListener('click',(e)=>{
+              e.preventDefault() 
+          
+          let editedInput = e.target.parentElement.children[0].value 
+          let playlistId  = playlistDiv.id
+          playlistDiv.remove()
+          Playlist.updateTitle(editedInput,playlistId,playlistWindowDiv)
+            })
+            
+          })
+          
+
+          let newSongForm = document.createElement('form')
+          let newSongInput = document.createElement('input')
+          let newSong = document.createElement('button')
+          newSong.id = "songBtn"
+          newSong.innerText = "🎵"
+          newSongInput.setAttribute("type","hidden")
+          playlistDiv.appendChild(newSong)
+          newSong.addEventListener('click', ()=>{ 
+            newSong.style.display = "none"  
+            
+          newSongInput.setAttribute("type", "text")
+          newSongInput.placeholder = "Song Tittle"  
+          playlistDiv.append(newSongForm)
+          newSongForm.appendChild(newSongInput)
+          console.log("music!")
+        
+          newSongForm.addEventListener('submit',(e)=>{
+              e.preventDefault()
+              newSongInput.style.display = "none"
+              let title = e.target[0].value
+              let playlist_id = e.target.parentElement.id
+              
+              Playlist.fetchSongs(title, playlist_id)
+            })
+          })
+          
+         
+
+          playlistWindowDiv.appendChild(playlistDiv)
+          let songs = playlist.songs
+          songs.forEach( song => {
+          User.renderSongSec(song,playlistDiv)
+        })
+  }
 
 
   static renderSongSec(song,playlistDiv){
       let sectionDiv = document.createElement("div")
       sectionDiv.classList.add("song")
+      sectionDiv.id = song.id
       let deleteBtn = document.createElement("button")
+      deleteBtn.innerText = "X"
       sectionDiv.appendChild(deleteBtn)
-      deleteBtn.addEventListener("click", () => {
+      deleteBtn.addEventListener("click", (e) => {
+          e.preventDefault()
+      let findDiv = e.target.parentElement
+      let songId = e.target.parentElement.id
+      let playlistId = e.target.parentElement.parentElement.id
+      Playlist.deleteBtn(playlistId,songId,findDiv)
         console.log("baleeted")})
       let songData = document.createElement("ul")
       let titleLi = document.createElement("li")
@@ -190,6 +226,18 @@ class User {
       playlistDiv.appendChild(sectionDiv)
     }
 
-
+    
+    static deletePlaylist(playlistDiv){
+      let deleteBtn = document.createElement('button')
+      deleteBtn.innerText = "Delete"
+      playlistDiv.appendChild(deleteBtn)
+      deleteBtn.addEventListener('click',(e)=>{
+        e.preventDefault()
+        // debugger
+        let playlistId = e.target.parentElement.id 
+        let playlistDiv = e.target.parentElement
+        Playlist.removePlaylist(playlistId,playlistDiv)
+      })
+    }
 
 }
