@@ -50,7 +50,7 @@ static keepUserLogin(username) {
       Playlist.createPlaylistForm()
     } else {
       // debugger
-      console.log(data.message)
+      alert(data.message)
     }
 
   }
@@ -172,7 +172,47 @@ static keepUserLogin(username) {
 
   static logout(){
     localStorage.clear()
+    let findMain = document.getElementById('login-existing')
+    findMain.innerText = ""
+    findMain.className = "wrapper animated bounce"
+    let h1 = document.createElement('h1')
+    h1.innerText = "Login"
+    let hr = document.createElement("hr")
+    let form = document.createElement('form')
+    form.id = 'login'
+    form.className = "form"
+    let label = document.createElement('label')
+    label.id = "icon" 
+    label.htmlFor = "username"
+    let i = document.createElement('i')
+    i.className = "fa fa-user"
+    let inputUser = document.createElement('input')
+    inputUser.id = "username_field"
+    inputUser.type = "text"
+    inputUser.className = "input"
+    inputUser.name = "username"
+    inputUser.placeholder = "Username"
+    let inputSubmit = document.createElement('input')
+    inputSubmit.id = "btn"
+    inputSubmit.type = "submit"
+    inputSubmit.className = "btn"
+    inputSubmit.name = "btn"
+    let hrbottom = document.createElement("hr")
+    let button = document.createElement('button')
+    button.type = "button"
+    button.id = "create-account"
+    button.className ="w3-btn w3-white w3-border w3-border-red w3-round-large"
+    button.name = "button"
+    button.innerText = "Create User"
+
+    findMain.append(h1,hr,form,button)
+    form.append(label,inputUser,inputSubmit,hrbottom)
+    
+    label.append(i)
     User.verify()
+    
+
+    
   }
 
   static renderPlaylist(playlist,playlistWindowDiv){

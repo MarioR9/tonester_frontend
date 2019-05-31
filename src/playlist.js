@@ -17,10 +17,11 @@ class Playlist{
 
         static checkForSong(data,playlistDiv){
 
-            if(data.song.id){
-              User.renderSongSec(data.song, playlistDiv)
-            }else{
+            if(data.message){
               alert(data.message)
+              
+            }else{
+              User.renderSongSec(data.song, playlistDiv)
             } 
         }
 
