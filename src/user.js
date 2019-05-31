@@ -125,6 +125,7 @@ static keepUserLogin(username) {
 
       let profileDiv = document.createElement("div")
       profileDiv.classList.add("profile")
+      profileDiv.classList.add("profile-card")
       let profileBtn = document.createElement('button')
       profileBtn.innerText = "Edit Profile"
       profileBtn.addEventListener('click',(e)=>{
@@ -157,7 +158,7 @@ static keepUserLogin(username) {
       searchDiv.classList.add("search")
 
       let playlistWindowDiv = document.createElement("div")
-      playlistWindowDiv.classList.add("playlist")
+      playlistWindowDiv.classList.add("playlist-card")
 
       if(data.playlists){
       let list = data.playlists
@@ -285,6 +286,10 @@ static keepUserLogin(username) {
 
 
   static renderSongSec(song,playlistDiv){
+      let topNav = document.createElement("div")
+      topNav.classList.add("topnav")
+      let body = document.getElementsByTagName("body")[0]
+      body.appendChild(topNav)
       let sectionDiv = document.createElement("div")
       sectionDiv.classList.add("song")
       sectionDiv.id = song.id
@@ -299,6 +304,7 @@ static keepUserLogin(username) {
       Playlist.deleteBtn(playlistId,songId,findDiv)
         console.log("baleeted")})
       let songData = document.createElement("ul")
+      songData.style.listStyle = "none"
       let titleLi = document.createElement("li")
       titleLi.innerText = `Title: ${song.title}`
       let albumLi = document.createElement("li")
@@ -307,8 +313,10 @@ static keepUserLogin(username) {
       let artistLi = document.createElement("li")
       artistLi.innerText = `Artist: ${song.artist}`
 
-      let albumCoverLi = document.createElement("li")
-      albumCoverLi.innerText = `Cover: ${song.album_cover}`
+      let albumCoverLi = document.createElement("img")
+      albumCoverLi.classList.add("cover-small")
+      albumCoverLi.src = song.album_cover
+      // albumCoverLi.innerText = `Cover: ${song.album_cover}`
       let hiddenForm = document.createElement('form')
       let hiddenInput = document.createElement('input')
       hiddenInput.setAttribute("type", "hidden")
