@@ -11,7 +11,7 @@ class User {
   static verify() {
     
     let form = document.getElementById("login")
-    form.addEventListener("submit", this.grabUser)
+    form.addEventListener("submit", User.grabUser)
     
     let button = document.getElementById("create-account")
     button.addEventListener("click", User.createAccount)
@@ -19,6 +19,8 @@ class User {
 
   static grabUser(e) {
     e.preventDefault()
+    debugger
+    e.target.parentElement.className = "none"
     let name = e.currentTarget.firstElementChild.value
     fetch('http://localhost:3000/login', {
       method: "POST",
@@ -48,7 +50,7 @@ static keepUserLogin(username) {
       User.renderProfile(data)
       Playlist.createPlaylistForm()
     } else {
-      alert(data.message)
+      console.log(data.message)
     }
   
   }
@@ -100,7 +102,7 @@ static keepUserLogin(username) {
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
-
+      page.className = "none"
       let logoutButton = document.createElement("button")
       logoutButton.innerText = "Logout"
       page.append(logoutButton)

@@ -3,7 +3,7 @@
 
 if(!localStorage.getItem('user')){
 document.addEventListener("DOMContentLoaded", function(){
-
+  
   User.verify()
 
 })
