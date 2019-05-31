@@ -11,7 +11,7 @@ class User {
   static verify() {
     
     let form = document.getElementById("login")
-    form.addEventListener("submit", this.grabUser)
+    form.addEventListener("submit", User.grabUser)
     
     let button = document.getElementById("create-account")
     button.addEventListener("click", User.createAccount)
@@ -19,7 +19,8 @@ class User {
 
   static grabUser(e) {
     e.preventDefault()
-    let name = e.currentTarget.firstElementChild.value
+    // e.target.parentElement.className = "none"
+    let name = e.currentTarget.children[1].value
     fetch('http://localhost:3000/login', {
       method: "POST",
       headers: {"Content-type": "application/json"},
@@ -48,7 +49,8 @@ static keepUserLogin(username) {
       User.renderProfile(data)
       Playlist.createPlaylistForm()
     } else {
-      alert(data.message)
+      // debugger
+      console.log(data.message)
     }
   
   }
@@ -62,7 +64,7 @@ static keepUserLogin(username) {
      <input type="text" id="create-username" placeholder="New Username">
      <input type="text" placeholder="New Bio">
      <input type="text" placeholder="New Photo">
-     <button id="submit-btn" type="submit" name="button">Create New User!</button>
+     <button id="submit-btn" type="submit" class="w3-btn w3-white w3-border w3-border-red w3-round-large" name="button">Create New User!</button>
     </form>`
 
     let btn = document.querySelector(".create")
@@ -100,7 +102,9 @@ static keepUserLogin(username) {
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
-
+      if(page.dataset.uId){
+      page.className = "none"
+      }
       let logoutButton = document.createElement("button")
       logoutButton.innerText = "Logout"
       page.append(logoutButton)
