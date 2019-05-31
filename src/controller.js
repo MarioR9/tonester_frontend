@@ -1,8 +1,0 @@
-// verification/authentication
-// 
-
-class Controller{
-    
-   
-
-}

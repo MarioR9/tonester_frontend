@@ -3,234 +3,30 @@
   <head>
     <meta charset="utf-8">
     <title>TONESTER</title>
-    <style >
-    @import url(https://fonts.googleapis.com/css?family=Lobster);
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-user-select:none;
-     -moz-user-select:none;
-      -ms-user-select:none;
-          user-select:none;
-}
-
-body {
-  background: hsla(255, 255%, 255%, 1);
-  font: 100%/1 'Lobster', cursive;
-}
-
-.login {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -10rem 0 0 -10rem;
-  width: 20rem;
-  height: 20rem;
-  padding: 3em;
-  background: hsla(255,255%,255%,1);
-  border-radius: 50%;
-  overflow: hidden;
-  transition:all 1s ease;
-}
-.login:hover > .header, .login.clicked > .header {
-  width: 2rem;
-}
-.login:hover > .header > .text, .login.clicked > .header > .text {
-  font-size: 1rem;
-  -webkit-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-.login.loading > .header {
-  width: 20rem;
-  transition:all 1s ease;
-}
-.login.loading > .header > .text {
-  display: none;
-}
-.login.loading > .header > .loader {
-  display: block;
-}
-.header {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  width: 20rem;
-  height: 20rem;
-  background: rgb(0, 0, 0);
-  transition: width 0.5s ease-in-out;
-}
-.header > .text {
-  display: block;
-  width: 100%;
-  height: 100%;
-  font-size: 5rem;
-  text-align: center;
-  line-height: 20rem;
-  color: hsla(255,255%,255%,1);
-  transition: all 0.5s ease-in-out;
-}
-.header > .loader {
-  display: none;
-  position: absolute;
-  left: 5rem;
-  top: 5rem;
-  width: 10rem;
-  height: 10rem;
-  border-left: 10px solid hsla(255, 255%, 255%, 1);
-  border-bottom:10px solid hsla(255,255%,255%,1);
-  border-right:10px solid hsla(255,255%,255%,1);
-  border-top: 8px solid hsla(255,255%,255%,1);
-  border-radius: 50%;
-  box-shadow:inset 2px 2px 2px 2px hsla(0, 5%, 0%, 1);
-  -webkit-animation: loading 2s linear infinite;
-          animation: loading 2s linear infinite;
-}
-.header > .loader:after {
-  content: "";
-  position: absolute;
-  left: 4.15rem;
-  top: -0.5rem;
-  width: 1rem;
-  height: 1rem;
-  background: hsla(1, 75%, 55%, 1);
-  border-radius: 50%;
-  border-right: 1px solid hsla(1, 75%, 55%, 1);
-  
-}
-.header > .loader:before {
-  content: "";
-  position: absolute;
-  left: 3.4rem;
-  top: -0.5rem;
-  width: 0;
-  height: 0;
-  border-right: 1rem solid hsla(1, 75%, 55%, 1);
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-}
-
-@-webkit-keyframes loading {
-  50% {
-  border-left: 10px solid hsla(1, 95%, 25%, 1);
-  border-bottom:10px solid hsla(1, 95%, 25%, 1);
-  border-right:10px solid hsla(1, 95%, 25%, 1);
-  border-top:8px solid hsla(1, 95%, 25%, 1);  
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes loading {
-  50% {
-  border-left: 10px solid hsla(1, 95%, 25%, 1);
-  border-bottom:10px solid hsla(1, 95%, 25%, 1);
-  border-right:10px solid hsla(1, 95%, 25%, 1);
-  border-top:8px solid hsla(1, 95%, 25%, 1);  
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-.form {
-  margin: 0 0 0 2rem;
-  padding: 0.5rem;
-}
-
-.input {
-  display: block;
-  width: 100%;
-  font-size: 2rem;
-  padding: 0.5rem 1rem;
-  box-shadow: none;
-  border-color: hsla(0, 5%, 0%, 1);
-  border-width: 0 0 3px 0;
-  transition: all .5s ease-in;
-  outline:transparent;
-}
-.input + .input {
-  margin: 10px 0 0;
-}
-.input:focus {
-  border-bottom: 3px solid hsla(1, 75%, 55%, 1);
-}
-
-.btn {
-  position: absolute;
-  right: 7.8rem;
-  bottom: 3rem;
-  width: 4rem;
-  height: 4rem;
-  border: none;
-  background: hsla(255, 255%, 255%, 1);
-  font-size: 0;
-  border: none;
-  transition: all 0.3s ease-in-out;
-}
-.btn:after {
-  content: "";
-  position: absolute;
-  left: 1.4rem;
-  top: 1rem;
-  width: 0;
-  height: 0;
-  border-left: 1.6rem solid hsla(1, 75%, 55%, 1);
-  border-top: .8rem solid transparent;
-  border-bottom: .8rem solid transparent;
-  transition: border 0.3s ease-in-out 0s;
-}
-.btn:hover, .btn:focus, .btn:active {
-  outline: none;
-  
-}
-.btn:hover:after, .btn:focus:after, .btn:active:after {
-  border-left-color: hsla(0, 5%, 0%, 1);
-}
-.resetbtn{
-  margin:1%;
-  border:none;
-  padding:.5em;
-  width:5em;
-  background:hsla(0,0%,0%,1);
-  color:hsla(255,255%,255%,1);
-  font-size:1.5em;
-  border-radius:2px;
-  transition:all 1s ease-in-out;
-  outline:none;
-  box-shadow:0 0 1px 1px hsla(0,0%,0%,0.2);
-}
-.resetbtn:hover, .resetbtn:focus{
-  background:hsla(255,255%,255%,1);
-  color:hsla(0,0%,0%,1);
-  outline:5px solid hsla(0,0%,0%,1);
-}
-    
-    </style>
+    <link rel="stylesheet" href="styles/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   <body>
-      <div id="login-existing" class="login">
-          <header class="header">
-              <span class="text">LOGIN</span>
-              <span class="loader"></span>
-            </header>
+      <div id="login-existing" class="wrapper animated bounce">
+            <h1>Login</h1>
+            <hr>
         <form id="login" class="form">
+            <label id="icon" for="username">
+              <i class="fa fa-user"></i>
+            </label>
           <input id="username_field" class="input" type="text" name="username" placeholder="Username">
-          <button id="btn" type="submit" class="btn" name="btn">Login</button>
+          <input id="btn" type="submit" class="btn" name="btn"></input>
+          <hr>
         </form>
-          <button type="button" id="create-account" class="resetbtn" name="button">Create User</button>
+          <button type="button" id="create-account" class="w3-btn w3-white w3-border w3-border-red w3-round-large"" name="button">Create User</button>
       </div>
-      <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script>
+      <script src="https://static.codepen.io/assets/editor/live/css_reload-5619dc0905a68b2e6298901de54f73cefe4e079f65a75406858d92924b4938bf.js"></script>
     <script src="src/index.js"></script>
     <script src="src/user.js"></script>
     <script src="src/playlist.js"></script>
-    <script src="src/style.js"></script>
     
   </body>
 </html>
