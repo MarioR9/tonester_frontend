@@ -48,6 +48,7 @@ class Playlist{
       playlistInput.placeholder = "Title"
       let createBtn = document.createElement('button')
       createBtn.innerText = "Create"
+      createBtn.className = "button"
       playlistForm.addEventListener('submit', (e)=>{
         e.preventDefault()
         let input = e.target[0].value

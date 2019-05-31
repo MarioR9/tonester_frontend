@@ -196,7 +196,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1a130c;
+  background-color: #999999;
 }
 *, *:before, *:after {
   box-sizing: border-box;
@@ -224,7 +224,7 @@ body, html {
   padding: 1rem;
   width: 20rem;
   height: auto;
-  background-color: #002266;
+  background-color: #b9bdc5d0;
   display: inline-grid;
   margin: 1rem 2rem;
   /* box-shadow: 3px 4px #e04b52; */
@@ -236,7 +236,7 @@ body, html {
   padding: 1rem;
   width: auto;
   height: auto;
-  background-color: #002266;
+  background-color: #b9bdc5d0;
   display: inline-grid;
   margin: 1rem 2rem;
   /* box-shadow: 3px 4px #e04b52; */

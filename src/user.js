@@ -116,6 +116,7 @@ static keepUserLogin(username) {
       }
       let logoutButton = document.createElement("button")
       logoutButton.innerText = "Logout"
+      logoutButton.className = "button"
       page.append(logoutButton)
       logoutButton.addEventListener('click',function(){
         User.logout()
@@ -128,6 +129,7 @@ static keepUserLogin(username) {
       profileDiv.classList.add("profile-card")
       let profileBtn = document.createElement('button')
       profileBtn.innerText = "Edit Profile"
+      profileBtn.className = "button"
       profileBtn.addEventListener('click',(e)=>{
         let newDiv = document.querySelector('.profile')
 
@@ -226,6 +228,7 @@ static keepUserLogin(username) {
           let editTitle = document.createElement("input")
           User.deletePlaylist(playlistDiv)
           editButton.innerText = "Edit"
+          editButton.className = "button"
           editTitle.setAttribute('type','hidden')
           //Edit button to text on click
           playlistDiv.append(editTitle,editButton)
@@ -250,6 +253,7 @@ static keepUserLogin(username) {
           let newSong = document.createElement('button')
           newSong.id = "songBtn"
           newSong.innerText = "🎵"
+          newSong.className = "button"
           newSongInput.setAttribute("type","hidden")
           playlistDiv.appendChild(newSong)
           newSong.addEventListener('click', ()=>{
@@ -294,7 +298,8 @@ static keepUserLogin(username) {
       sectionDiv.classList.add("song")
       sectionDiv.id = song.id
       let deleteBtn = document.createElement("button")
-      deleteBtn.innerText = "X"
+      deleteBtn.innerText = "Delete song"
+      deleteBtn.className = "button"
       sectionDiv.appendChild(deleteBtn)
       deleteBtn.addEventListener("click", (e) => {
           e.preventDefault()
@@ -346,6 +351,7 @@ static keepUserLogin(username) {
     static deletePlaylist(playlistDiv){
       let deleteBtn = document.createElement('button')
       deleteBtn.innerText = "Delete"
+      deleteBtn.className = "button"
       playlistDiv.appendChild(deleteBtn)
       deleteBtn.addEventListener('click',(e)=>{
         e.preventDefault()
@@ -388,6 +394,7 @@ static keepUserLogin(username) {
         let photoSrc = document.createElement('input')
         photoSrc.value = img
         let editBtn = document.createElement('button')
+        editBtn.className = "button"
         oldForm.append(form)
         form.append(usernameInput,bioInput,photoSrc,editBtn)
 

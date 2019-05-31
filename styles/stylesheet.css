@@ -23,10 +23,10 @@
     body,input{
       font-family:'Open sans',sans-serif;
       font-size:18px;
-      color: #d1d1e0;
+      color: #111111;
     }
     body{
-      background-color:#292931;
+      background-color:#cececebd;
       background:url(images/italian_bkgd_blur_tint.jpg)  no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
@@ -158,4 +158,18 @@
     
     .closebtn:hover {
       color: black;
+    }
+    .button {
+      background-color: #f4511e;
+      border: none;
+      color: white;
+      padding: 11px 17px;
+      text-align: center;
+      font-size: 16px;
+      margin: 4px 2px;
+      opacity: 0.6;
+      transition: 0.3s;
+      display: inline-block;
+      text-decoration: none;
+      cursor: pointer;
     }
