@@ -1,11 +1,19 @@
 // initial page load
 
 
-document.addEventListener("DOMContentLoaded", init)
+if(!localStorage.getItem('user')){
+document.addEventListener("DOMContentLoaded", function(){
 
-function init() {
-  
   User.verify()
 
+})
+
+}else{
+document.addEventListener("DOMContentLoaded", function(){
+      User.keepUserLogin(JSON.parse(localStorage.user).username)
+  })
+  
   
 }
+
+

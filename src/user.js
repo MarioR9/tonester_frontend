@@ -9,6 +9,7 @@ class User {
   }
 
   static verify() {
+    
     let form = document.getElementById("login")
     form.addEventListener("submit", this.grabUser)
     
@@ -29,8 +30,21 @@ class User {
   .then(res => res.json())
   .then(data =>  User.renderNewProfile(data))
 }
+
+static keepUserLogin(username) {
+  fetch('http://localhost:3000/login', {
+    method: "POST",
+    headers: {"Content-type": "application/json"},
+    body: JSON.stringify({
+      username: username
+  })
+})
+.then(res => res.json())
+.then(data =>  User.renderNewProfile(data))
+}
   static renderNewProfile(data){
     if(data.id){
+     localStorage.setItem("user",JSON.stringify(data))
       User.renderProfile(data)
       Playlist.createPlaylistForm()
     } else {
@@ -69,20 +83,19 @@ class User {
           })
         })
         .then(response => response.json())
-        .then(newProfile => ()=>{
-          if(newProfile.id){
-          User.renderProfile(newProfile) 
-          }else{
-          console.log(newProfile)
-          }
-        })
+        .then(newProfile => User.checkForNewUser(newProfile))
       })
     }
 
+    static checkForNewUser(newProfile){
+      if(newProfile.id){
+        User.renderProfile(newProfile) 
+        }else{
+        console.log(newProfile)
+        }
+    }
+
   static renderProfile(data) {
-    
-    localStorage.setItem("id",data.id)
-      localStorage.setItem("id", data.id)
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
@@ -92,12 +105,15 @@ class User {
       profileBtn.innerText = "Edit Profile"
       profileBtn.addEventListener('click',(e)=>{
         let newDiv = document.querySelector('.profile')
-        newDiv.innerText = ""
-
+      
         e.preventDefault()
-        User.edit_createUserFields()
+        let img = e.target.parentElement.children[1].src
+        let username = e.target.parentElement.children[2].innerText
+        let bio = e.target.parentElement.children[3].innerText
+        // newDiv.innerText = ""
+        User.edit_createUserFields(username,bio,img)
 
-        // User.editProfile()
+        
         console.log("edit profile")
       })
       profileDiv.appendChild(profileBtn)
@@ -127,27 +143,11 @@ class User {
       }
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
+
     
   }
 
-  static editProfile(username,bio,photo,user_id){
-    fetch(`http://localhost:3000/users/${user_id}`, {
-      method: "PATCH",
-       headers: {"Content-type": "application/json"},
-        body: JSON.stringify({
-         bio: bio,
-         photo: photo,
-         username: username
-       })
-     })
-     .then(response => response.json())
-     .then(newProfile => User.renderEditedProfile(newProfile))
-  }
-
-    static renderEditedProfile(newProfile){
-      User.renderProfile(newProfile)
-      Playlist.createPlaylistForm()
-    }
+  
 
 
 
@@ -188,8 +188,9 @@ class User {
           newSongInput.setAttribute("type","hidden")
           playlistDiv.appendChild(newSong)
           newSong.addEventListener('click', ()=>{ 
-            newSong.style.display = "none"  
-            
+        
+              newSong.style.display = "none"  
+           
           newSongInput.setAttribute("type", "text")
           newSongInput.placeholder = "Song Tittle"  
           playlistDiv.append(newSongForm)
@@ -283,17 +284,37 @@ class User {
       })
     }
 
-      static edit_createUserFields(){
+    static editProfile(username,bio,photo,user_id){
+      fetch(`http://localhost:3000/users/${user_id}`, {
+        method: "PATCH",
+         headers: {"Content-type": "application/json"},
+          body: JSON.stringify({
+           bio: bio,
+           photo: photo,
+           username: username
+         })
+       })
+       .then(response => response.json())
+       .then(newProfile => User.renderEditedProfile(newProfile))
+    }
+  
+      static renderEditedProfile(newProfile){
+        User.renderProfile(newProfile)
+        Playlist.createPlaylistForm()
+      }
+
+      static edit_createUserFields(username,bio,img){
         let oldForm = document.querySelector('.profile')
+
         oldForm.innerText = ""
-        // let currentUsername = querySelector('.title').innerText
-        // let currentBio = querySelector('.description').innerText
-        // let currentPhoto = querySelector('.avatar').src
         
         let form = document.createElement('form')
         let usernameInput = document.createElement('input')
+        usernameInput.value = username
         let bioInput = document.createElement('input')
+        bioInput.value = bio
         let photoSrc = document.createElement('input')
+        photoSrc.value = img
         let editBtn = document.createElement('button')
         oldForm.append(form)
         form.append(usernameInput,bioInput,photoSrc,editBtn)

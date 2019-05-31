@@ -12,12 +12,13 @@ class Playlist{
         })
       })
         .then(response => response.json())
-        .then(data => Playlist.checkForSong(data))
+        .then(data => Playlist.checkForSong(data,playlistDiv))
         }
 
-        static checkForSong(data){
-            if(data.id){
-              User.renderSongSec(data.newSong, playlistDiv)
+        static checkForSong(data,playlistDiv){
+
+            if(data.song.id){
+              User.renderSongSec(data.song, playlistDiv)
             }else{
               alert(data.message)
             } 
