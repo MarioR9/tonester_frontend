@@ -9,10 +9,10 @@ class User {
   }
 
   static verify() {
-    
+
     let form = document.getElementById("login")
     form.addEventListener("submit", User.grabUser)
-    
+
     let button = document.getElementById("create-account")
     button.addEventListener("click", User.createAccount)
   }
@@ -52,29 +52,38 @@ static keepUserLogin(username) {
       // debugger
       console.log(data.message)
     }
-  
+
   }
 
  static createAccount() {
-  
+
     let oldForm = document.getElementById("login-existing")
     oldForm.innerText = ""
     oldForm.innerHTML = `
     <form class="create" action="index.html" method="post">
-     <input type="text" id="create-username" placeholder="New Username">
-     <input type="text" placeholder="New Bio">
-     <input type="text" placeholder="New Photo">
+      <label id="icon" for="username">
+        <i class="fa fa-user"></i>
+      </label>
+     <input type="text" class="top" id="create-username" placeholder="New Username">
+     <label id="icon" for="username">
+       <i class="fa fa-user"></i>
+     </label>
+     <input type="text" class="middle" placeholder="New Bio">
+     <label id="icon" for="username">
+       <i class="fa fa-user"></i>
+     </label>
+     <input type="text" class="bottom" placeholder="New Photo">
      <button id="submit-btn" type="submit" class="w3-btn w3-white w3-border w3-border-red w3-round-large" name="button">Create New User!</button>
     </form>`
 
     let btn = document.querySelector(".create")
       btn.addEventListener('submit', (e)=>{
         e.preventDefault()
-        console.log("clicked")
-
-        let username = event.target.children[0].value
-        let bio = event.target.children[1].value
-        let photo = event.target.children[2].value
+        // console.log("clicked")
+        // debugger
+        let username = event.target.children[1].value
+        let bio = event.target.children[3].value
+        let photo = event.target.children[5].value
         fetch('http://localhost:3000/users', {
          method: "POST",
           headers: {"Content-type": "application/json"},
@@ -91,12 +100,12 @@ static keepUserLogin(username) {
 
     static checkForNewUser(newProfile){
       if(newProfile.id){
-        User.renderProfile(newProfile) 
+        User.renderProfile(newProfile)
         }else{
         console.log(newProfile)
         }
     }
-   
+
 
   static renderProfile(data) {
       let page = document.getElementById("login-existing")
@@ -110,17 +119,17 @@ static keepUserLogin(username) {
       page.append(logoutButton)
       logoutButton.addEventListener('click',function(){
         User.logout()
-       
+
       })
-    
-      
+
+
       let profileDiv = document.createElement("div")
       profileDiv.classList.add("profile")
       let profileBtn = document.createElement('button')
       profileBtn.innerText = "Edit Profile"
       profileBtn.addEventListener('click',(e)=>{
         let newDiv = document.querySelector('.profile')
-      
+
         e.preventDefault()
         let img = e.target.parentElement.children[1].src
         let username = e.target.parentElement.children[2].innerText
@@ -128,7 +137,7 @@ static keepUserLogin(username) {
         // newDiv.innerText = ""
         User.edit_createUserFields(username,bio,img)
 
-        
+
         console.log("edit profile")
       })
       profileDiv.appendChild(profileBtn)
@@ -165,11 +174,11 @@ static keepUserLogin(username) {
     localStorage.clear()
     User.verify()
   }
-  
+
   static renderPlaylist(playlist,playlistWindowDiv){
     let playlistDiv = document.createElement("div")
           playlistDiv.classList.add("playlistSong")
-          
+
           playlistDiv.innerText = playlist.title
           playlistDiv.id = playlist.id
           let editButton = document.createElement('button')
@@ -183,17 +192,17 @@ static keepUserLogin(username) {
               e.preventDefault()
           editTitle.setAttribute('type','text')
           editButton.addEventListener('click',(e)=>{
-              e.preventDefault() 
-          
-          let editedInput = e.target.parentElement.children[1].value 
+              e.preventDefault()
+
+          let editedInput = e.target.parentElement.children[1].value
           let playlistId  = playlistDiv.id
-          
+
           playlistDiv.remove()
           Playlist.updateTitle(editedInput,playlistId,playlistWindowDiv)
             })
-            
+
           })
-          
+
 
           let newSongForm = document.createElement('form')
           let newSongInput = document.createElement('input')
@@ -202,34 +211,34 @@ static keepUserLogin(username) {
           newSong.innerText = "🎵"
           newSongInput.setAttribute("type","hidden")
           playlistDiv.appendChild(newSong)
-          newSong.addEventListener('click', ()=>{ 
-        
-              newSong.style.display = "none"  
-           
+          newSong.addEventListener('click', ()=>{
+
+              newSong.style.display = "none"
+
           newSongInput.setAttribute("type", "text")
-          newSongInput.placeholder = "Song Tittle"  
+          newSongInput.placeholder = "Song Tittle"
           playlistDiv.append(newSongForm)
           newSongForm.appendChild(newSongInput)
           console.log("music!")
-        
+
           newSongForm.addEventListener('submit',(e)=>{
               e.preventDefault()
               newSongInput.style.display = "none"
               let title = e.target[0].value
               let playlist_id = e.target.parentElement.id
-              
+
               Playlist.fetchSongs(title, playlist_id)
             })
           })
-          
-         
+
+
 
           playlistWindowDiv.appendChild(playlistDiv)
           if(playlist.songs){
           let songs = playlist.songs
           songs.forEach( song => {
           User.renderSongSec(song,playlistDiv)
-          
+
         })
       }
   }
@@ -285,7 +294,7 @@ static keepUserLogin(username) {
       playlistDiv.appendChild(sectionDiv)
     }
 
-    
+
     static deletePlaylist(playlistDiv){
       let deleteBtn = document.createElement('button')
       deleteBtn.innerText = "Delete"
@@ -293,7 +302,7 @@ static keepUserLogin(username) {
       deleteBtn.addEventListener('click',(e)=>{
         e.preventDefault()
         // debugger
-        let playlistId = e.target.parentElement.id 
+        let playlistId = e.target.parentElement.id
         let playlistDiv = e.target.parentElement
         Playlist.removePlaylist(playlistId,playlistDiv)
       })
@@ -312,7 +321,7 @@ static keepUserLogin(username) {
        .then(response => response.json())
        .then(newProfile => User.renderEditedProfile(newProfile))
     }
-  
+
       static renderEditedProfile(newProfile){
         User.renderProfile(newProfile)
         Playlist.createPlaylistForm()
@@ -322,7 +331,7 @@ static keepUserLogin(username) {
         let oldForm = document.querySelector('.profile')
 
         oldForm.innerText = ""
-        
+
         let form = document.createElement('form')
         let usernameInput = document.createElement('input')
         usernameInput.value = username
@@ -333,7 +342,7 @@ static keepUserLogin(username) {
         let editBtn = document.createElement('button')
         oldForm.append(form)
         form.append(usernameInput,bioInput,photoSrc,editBtn)
-        
+
         form.addEventListener('submit',(e)=>{
           e.preventDefault()
           let username = e.target[0].value
@@ -341,7 +350,7 @@ static keepUserLogin(username) {
           let photo = e.target[2].value
           let user_id = e.target.parentElement.parentElement.dataset.uId
           User.editProfile(username,bio,photo,user_id)
-          
+
           console.log("profile edit")
         })
 
