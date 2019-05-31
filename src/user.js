@@ -27,25 +27,20 @@ class User {
     })
   })
   .then(res => res.json())
-  .then(data => {
-    localStorage.setItem("id", data.id)
+  .then(data =>  User.renderNewProfile(data))
+}
+  static renderNewProfile(data){
     if(data.id){
-      while(localStorage.length == 1){
       User.renderProfile(data)
       Playlist.createPlaylistForm()
-      }
+    } else {
+      alert(data.message)
     }
-  })
-  // find user, if exists, pass UserID into URL
-
-// run name against things already in DB
-// if match, go to page
-// if no match, send alert
-// decrement from total of 3, after all attempts exhausted, send to creation page
-}
+  
+  }
 
  static createAccount() {
-
+  
     let oldForm = document.getElementById("login-existing")
     oldForm.innerText = ""
     oldForm.innerHTML = `
@@ -73,18 +68,39 @@ class User {
             username: username
           })
         })
+        .then(response => response.json())
+        .then(newProfile => ()=>{
+          if(newProfile.id){
+          User.renderProfile(newProfile) 
+          }else{
+          console.log(newProfile)
+          }
+        })
       })
     }
 
   static renderProfile(data) {
     
-    if (data.id) {
+    localStorage.setItem("id",data.id)
       localStorage.setItem("id", data.id)
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
       let profileDiv = document.createElement("div")
       profileDiv.classList.add("profile")
+      let profileBtn = document.createElement('button')
+      profileBtn.innerText = "Edit Profile"
+      profileBtn.addEventListener('click',(e)=>{
+        let newDiv = document.querySelector('.profile')
+        newDiv.innerText = ""
+
+        e.preventDefault()
+        User.edit_createUserFields()
+
+        // User.editProfile()
+        console.log("edit profile")
+      })
+      profileDiv.appendChild(profileBtn)
       let image = document.createElement("img")
       image.classList.add("avatar")
       image.src = data.photo
@@ -103,19 +119,38 @@ class User {
       let playlistWindowDiv = document.createElement("div")
       playlistWindowDiv.classList.add("playlist")
 
-
+      if(data.playlists){
       let list = data.playlists
       list.forEach( playlist => {
           User.renderPlaylist(playlist,playlistWindowDiv)
       })
+      }
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
-      
-      
-    } else {
-      alert(data.message)
-    }
+    
   }
+
+  static editProfile(username,bio,photo,user_id){
+    fetch(`http://localhost:3000/users/${user_id}`, {
+      method: "PATCH",
+       headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+         bio: bio,
+         photo: photo,
+         username: username
+       })
+     })
+     .then(response => response.json())
+     .then(newProfile => User.renderEditedProfile(newProfile))
+  }
+
+    static renderEditedProfile(newProfile){
+      User.renderProfile(newProfile)
+      Playlist.createPlaylistForm()
+    }
+
+
+
   static renderPlaylist(playlist,playlistWindowDiv){
     let playlistDiv = document.createElement("div")
           playlistDiv.classList.add("playlistSong")
@@ -174,10 +209,13 @@ class User {
          
 
           playlistWindowDiv.appendChild(playlistDiv)
+          if(playlist.songs){
           let songs = playlist.songs
           songs.forEach( song => {
           User.renderSongSec(song,playlistDiv)
+          
         })
+      }
   }
 
 
@@ -204,8 +242,8 @@ class User {
       let artistLi = document.createElement("li")
       artistLi.innerText = `Artist: ${song.artist}`
 
-      let genreLi = document.createElement("li")
-      genreLi.innerText = `Genre: ${song.genre}`
+      let albumCoverLi = document.createElement("li")
+      albumCoverLi.innerText = `Cover: ${song.album_cover}`
       let hiddenForm = document.createElement('form')
       let hiddenInput = document.createElement('input')
       hiddenInput.setAttribute("type", "hidden")
@@ -226,7 +264,7 @@ class User {
         hiddenInput.value = ""
       })
 
-      songData.append(artistLi, titleLi, albumLi, genreLi,hiddenForm)
+      songData.append(artistLi, titleLi, albumLi, albumCoverLi,hiddenForm)
       sectionDiv.appendChild(songData)
       playlistDiv.appendChild(sectionDiv)
     }
@@ -245,4 +283,31 @@ class User {
       })
     }
 
+      static edit_createUserFields(){
+        let oldForm = document.querySelector('.profile')
+        oldForm.innerText = ""
+        // let currentUsername = querySelector('.title').innerText
+        // let currentBio = querySelector('.description').innerText
+        // let currentPhoto = querySelector('.avatar').src
+        
+        let form = document.createElement('form')
+        let usernameInput = document.createElement('input')
+        let bioInput = document.createElement('input')
+        let photoSrc = document.createElement('input')
+        let editBtn = document.createElement('button')
+        oldForm.append(form)
+        form.append(usernameInput,bioInput,photoSrc,editBtn)
+        
+        form.addEventListener('submit',(e)=>{
+          e.preventDefault()
+          let username = e.target[0].value
+          let bio = e.target[1].value
+          let photo = e.target[2].value
+          let user_id = e.target.parentElement.parentElement.dataset.uId
+          User.editProfile(username,bio,photo,user_id)
+          
+          console.log("profile edit")
+        })
+
+      }
 }

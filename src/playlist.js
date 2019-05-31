@@ -12,7 +12,15 @@ class Playlist{
         })
       })
         .then(response => response.json())
-        .then(data => User.renderSongSec(data.newSong, playlistDiv))
+        .then(data => Playlist.checkForSong(data))
+        }
+
+        static checkForSong(data){
+            if(data.id){
+              User.renderSongSec(data.newSong, playlistDiv)
+            }else{
+              alert(data.message)
+            } 
         }
 
     static deleteBtn(playlistId,songId,findDiv) {
