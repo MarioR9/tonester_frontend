@@ -246,6 +246,10 @@ static keepUserLogin(username) {
 
 
   static renderSongSec(song,playlistDiv){
+      let topNav = document.createElement("div")
+      topNav.classList.add("topnav")
+      let body = document.getElementsByTagName("body")[0]
+      body.appendChild(topNav)
       let sectionDiv = document.createElement("div")
       sectionDiv.classList.add("song")
       sectionDiv.id = song.id

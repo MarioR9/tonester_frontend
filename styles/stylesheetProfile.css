@@ -252,3 +252,8 @@ body, html {
   height: 12rem;
   width: auto;
 }
+
+.topnav {
+  background-color: #333;
+  /* overflow: hidden; */
+}
