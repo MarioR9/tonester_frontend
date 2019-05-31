@@ -211,3 +211,44 @@ body, html {
   padding: 0;
   margin: 0;
 }
+
+/* -------Ben Contributions--------- */
+
+.big-card {
+  margin: 2rem;
+}
+
+.profile-card {
+  text-align: left;
+  border: black solid 1px;
+  padding: 1rem;
+  width: 20rem;
+  height: auto;
+  background-color: #002266;
+  display: inline-grid;
+  margin: 1rem 2rem;
+  /* box-shadow: 3px 4px #e04b52; */
+}
+
+.playlist-card {
+  text-align: left;
+  border: black solid 1px;
+  padding: 1rem;
+  width: auto;
+  height: auto;
+  background-color: #002266;
+  display: inline-grid;
+  margin: 1rem 2rem;
+  /* box-shadow: 3px 4px #e04b52; */
+}
+
+.cover-small {
+  height: 5rem;
+  width: 5rem;
+}
+
+.avatar {
+  justify-self: center;
+  height: 12rem;
+  width: auto;
+}
