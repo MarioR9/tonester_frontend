@@ -94,11 +94,22 @@ static keepUserLogin(username) {
         console.log(newProfile)
         }
     }
+   
 
   static renderProfile(data) {
       let page = document.getElementById("login-existing")
       page.innerText = ""
       page.dataset.uId = data.id
+
+      let logoutButton = document.createElement("button")
+      logoutButton.innerText = "Logout"
+      page.append(logoutButton)
+      logoutButton.addEventListener('click',function(){
+        User.logout()
+       
+      })
+    
+      
       let profileDiv = document.createElement("div")
       profileDiv.classList.add("profile")
       let profileBtn = document.createElement('button')
@@ -144,13 +155,13 @@ static keepUserLogin(username) {
       profileDiv.append(image, username, bio)
       page.append(profileDiv, searchDiv, playlistWindowDiv)
 
-    
   }
 
+  static logout(){
+    localStorage.clear()
+    User.verify()
+  }
   
-
-
-
   static renderPlaylist(playlist,playlistWindowDiv){
     let playlistDiv = document.createElement("div")
           playlistDiv.classList.add("playlistSong")
