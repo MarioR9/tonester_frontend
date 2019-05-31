@@ -1,15 +1,19 @@
 // initial page load
 
 
-document.addEventListener("DOMContentLoaded", init)
-
-function init() {
+if(!localStorage.getItem('user')){
+document.addEventListener("DOMContentLoaded", function(){
 
   User.verify()
- 
 
-  // User.createAccount()
+})
 
-   // user5 = new User("A super chill lady", "n/a", "Chill Diane")
-  // user5.createAccount()
+}else{
+document.addEventListener("DOMContentLoaded", function(){
+      User.keepUserLogin(JSON.parse(localStorage.user).username)
+  })
+  
+  
 }
+
+
