@@ -1,4 +1,4 @@
-[![Generic badge](https://img.shields.io/badge/Code-React-blue.svg)](https://shields.io/)&nbsp; [![Generic badge](https://img.shields.io/badge/Code-RubyOnRails-red.svg)](https://shields.io/)&nbsp; [![Generic badge](https://img.shields.io/badge/Code-JavaScript-yellow.svg)](https://shields.io/)&nbsp; ![GitHub repo size](https://img.shields.io/github/repo-size/MarioR9/RickAndMortyFrontend?color=g&label=Repo%20Size)
+[![Generic badge](https://img.shields.io/badge/Code-React-blue.svg)](https://shields.io/)&nbsp; [![Generic badge](https://img.shields.io/badge/Code-RubyOnRails-red.svg)](https://shields.io/)&nbsp; [![Generic badge](https://img.shields.io/badge/Code-JavaScript-yellow.svg)](https://shields.io/)&nbsp; ![GitHub repo size](https://img.shields.io/github/repo-size/MarioR9/tonester_frontend?color=g&label=Repo%20Size)
 
 ## tonester_frontend
 
