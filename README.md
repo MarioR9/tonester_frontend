@@ -17,7 +17,7 @@ Tonester was build using vanilla javascript for the frontend and rails for the b
 
 Project is created with:
 * JavaScript
-* HMLT
+* HTML
 * CSS
 
 ## Images
